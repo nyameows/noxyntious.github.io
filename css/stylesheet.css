@@ -1,0 +1,38 @@
+@font-face {
+    font-family: "psansregular";
+    src: url("product-sans.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
+  html {
+    font-smooth: never;
+  }
+ span {
+    color: white;
+    font-family: "psansregular";
+ }
+ body {
+    font-family: "psansregular";
+    height: 100dvh;
+    margin: 0;
+    user-select: none;
+    overflow-x: hidden;
+    
+  }
+  body {
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+  }
+  .timeclass {
+    font-size: 20dvh;
+  }
+  .dateclass {
+    font-size: 10dvh;
+  }
+  .unixtimeclass {
+    font-size: 5dvh;
+  }

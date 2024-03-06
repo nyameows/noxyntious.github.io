@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<linkůl>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ericlock</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+<body onclick='(function(){document.querySelector("body").requestFullscreen();})();'>
+   <script>(function(){document.querySelector("body").requestFullscreen();})();</script>  
+    <p><span id="time" class="timeclass"></span></p>
+    <p><span id="day" class="dateclass"></span> <span id="date" class="dateclass"></span></p>
+    <p><span id="unixtime" class="unixtimeclass"></span></p>
+    <script>
+      // create a function to update the date and time
+      function updateDateTime() {
+        // create a new `Date` object
+        const now = new Date();
+
+        // get the current date and time as a string
+        const time = now.toLocaleTimeString();
+        const date = now.toLocaleDateString();
+        const unixtime = now.getTime();
+        // update the `textContent` property of the `span` element with the `id` of `datetime`
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var day = days[now.getDay()];
+        document.querySelector('#time').textContent = (time);
+        document.querySelector('#date').textContent = (" " + date);
+        document.querySelector('#day').textContent = (day + " ");
+        document.querySelector('#unixtime').textContent = ("Unix: " + unixtime);
+
+      }
+
+      // call the `updateDateTime` function every second
+      setInterval(updateDateTime, 10);
+    </script>
+</body>
+</html>
