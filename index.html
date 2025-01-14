@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="css/stylesheet.css">
 </head>
 <body onclick='(function(){document.querySelector("body").requestFullscreen();})();'>
-   <script>(function(){document.querySelector("body").requestFullscreen();})();</script>  
+   <script>(function(){document.querySelector("body").requestFullscreen();})();</script>
     <p><span id="time" class="timeclass"></span></p>
     <p><span id="day" class="dateclass"></span> <span id="date" class="dateclass"></span></p>
-    <p><span id="unixtime" class="unixtimeclass"></span></p>
+    <p><span id="unixtime" class="unixtimeclass" onclick="this.style.visibility='hidden'"></span></p>
     <script>
       // create a function to update the date and time
       function updateDateTime() {
