@@ -8,9 +8,60 @@
 </head>
 <body onclick='(function(){document.querySelector("body").requestFullscreen();})();'>
    <script>(function(){document.querySelector("body").requestFullscreen();})();</script>
-    <p><span id="time" class="timeclass"></span></p>
-    <p><span id="day" class="dateclass"></span> <span id="date" class="dateclass"></span></p>
-    <p><span id="unixtime" class="unixtimeclass" onclick="this.style.visibility='hidden'"></span></p>
+   <p><span id="time" class="timeclass"></span></p>
+   <p><span id="day" class="dateclass"></span> <span id="date" class="dateclass"></span></p>
+   <p><span id="unixtime" class="unixtimeclass""></span></p>
+   <div class="settingsbutton"><span>⚙️</span></div>
+   <div class="settings-menu">
+     <div class="menu-item" onclick="toggleDarkMode()">Toggle Dark Mode</div>
+     <div class="menu-item" onclick="toggleUnix()">Toggle Unix Time</div>
+     <div class="menu-item" onclick="aboutAlert()">About ericlock</div>
+   </div>
+   <script>
+     setTimeout(() => {
+       document.querySelector('.settingsbutton').style.opacity = '0';
+     }, 3000);
+
+     document.querySelector('.settingsbutton').addEventListener('mouseenter', function() {
+       this.style.opacity = '1';
+       document.querySelector('.settings-menu').style.display = 'block';
+       setTimeout(() => {
+         this.style.opacity = '0';
+         document.querySelector('.settings-menu').style.display = 'none';
+       }, 3000);
+     });
+
+     document.querySelector('.settings-menu').addEventListener('mouseenter', function() {
+       document.querySelector('.settingsbutton').style.opacity = '1';
+       this.style.display = 'block';
+       clearTimeout();
+     });
+
+     function toggleDarkMode() {
+         const isDark = document.body.style.backgroundColor !== 'white';
+
+         // Change body background
+         document.body.style.backgroundColor = isDark ? 'white' : 'black';
+
+         // Change HTML background for fullscreen
+         document.documentElement.style.backgroundColor = isDark ? 'white' : 'black';
+
+         // Change all span colors
+         document.querySelectorAll('span').forEach(span => {
+             span.style.color = isDark ? 'black' : 'white';
+         });
+     }
+
+     function aboutAlert() {
+       alert("ericlock by eri\nhttps://github.com/Noxyntious/noxyntious.github.io")
+     }
+     function toggleUnix() {
+       const unixElements = document.querySelectorAll('.unixtimeclass');
+       unixElements.forEach(element => {
+         element.style.display = element.style.display === 'none' ? '' : 'none';
+       });
+     }
+   </script>
     <script>
       // create a function to update the date and time
       function updateDateTime() {
