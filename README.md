@@ -1,2 +1,2 @@
 # ericlock
-simple html clock. made for my tablet. tap anywhere to fullscreen
+simple html clock. made for my tablet (and phone!). tap anywhere to fullscreen
