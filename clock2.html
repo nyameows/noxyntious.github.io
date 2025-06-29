@@ -77,6 +77,20 @@
                 font-size: 40px;
                 margin-top: 12px;
             }
+            .sun-times {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                color: lightblue;
+                font-size: 48px;
+                font-family: "Jersey 15", sans-serif;
+                text-align: right;
+            }
+            .sun-desc {
+                font-size: 40px;
+                margin-top: 12px;
+            }
+
         </style>
     </head>
     <body onclick='(function(){document.querySelector("body").requestFullscreen();})();'>
@@ -119,7 +133,9 @@
                 <!-- <div id="weather-desc" class="weather-desc">Pardubice</div> -->
                 <div id="weather-humidity" class="weather-desc"></div>
             </div>
-
+            <div class="sun-times">
+                <div id="sunset-time" class="sun-desc">Loading...</div>
+            </div>
         </div>
         <script>
             // create a function to update the date and time
@@ -157,28 +173,44 @@
                 // Pardubice coordinates
                 const latitude = 50.0343;
                 const longitude = 15.7812;
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Prague`;
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Prague`;
+                const sunUrl = `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`;
 
                 try {
-                    const response = await fetch(url);
-                    const data = await response.json();
+                    // Fetch weather data
+                    const weatherResponse = await fetch(weatherUrl);
+                    const weatherData = await weatherResponse.json();
 
-                    const temp = Math.round(data.current.temperature_2m);
-                    const humidity = data.current.relative_humidity_2m;
-                    const windSpeed = Math.round(data.current.wind_speed_10m);
-                    const maxTemp = Math.round(data.daily.temperature_2m_max[0]); // Today's max
-                    const minTemp = Math.round(data.daily.temperature_2m_min[0]); // Today's min
+                    const temp = Math.round(weatherData.current.temperature_2m);
+                    const humidity = weatherData.current.relative_humidity_2m;
+                    const windSpeed = Math.round(weatherData.current.wind_speed_10m);
+                    const maxTemp = Math.round(weatherData.daily.temperature_2m_max[0]);
+                    const minTemp = Math.round(weatherData.daily.temperature_2m_min[0]);
+                    const uvIndex = Math.round(weatherData.current.uv_index);
 
+                    // Fetch sunrise/sunset data
+                    const sunResponse = await fetch(sunUrl);
+                    const sunData = await sunResponse.json();
+
+                    // Convert UTC times to local Prague time
+                    const sunrise = new Date(sunData.results.sunrise).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Prague'});
+                    const sunset = new Date(sunData.results.sunset).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Prague'});
+
+                    // Update weather elements
                     const tempElement = document.querySelector("#weather-temp");
                     const detailsElement = document.querySelector("#weather-humidity");
+                    const sunriseElement = document.querySelector("#sunrise-time");
+                    const sunsetElement = document.querySelector("#sunset-time");
 
                     if (tempElement) tempElement.textContent = `${temp}°C`;
-                    if (detailsElement) detailsElement.textContent = `${windSpeed} km/h | ${humidity}% | H:${maxTemp}° L:${minTemp}°`;
+                    if (detailsElement) detailsElement.textContent = `${windSpeed} km/h | ${humidity}% | H:${maxTemp}° L:${minTemp}° | UV:${uvIndex}`;
+                    if (sunsetElement) sunsetElement.textContent = `+ ${sunrise} | - ${sunset}`;
 
                 } catch (error) {
-                    console.error('Weather fetch error:', error);
+                    console.error('Weather/Sun fetch error:', error);
                 }
             }
+
 
 
             // call the `updateDateTime` function every second
